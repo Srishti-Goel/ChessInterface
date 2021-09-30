@@ -21,7 +21,7 @@ class Tile extends React.Component<TileProps, TileState> {
         if(this.props.image_scr !== ""){
             //console.log("piece_" + this.props.ele_id, this.props.image_scr);
             return(
-                <div className = {clName}>
+                <div className = {clName} id = {this.props.id.toString()}>
                     <div id = { "piece_" + this.props.ele_id } className = "chess_piece_div" style={{ backgroundImage: `url(${this.props.image_scr})` }}>
                     </div>
                 </div>
@@ -29,7 +29,7 @@ class Tile extends React.Component<TileProps, TileState> {
         }
         else{
             return(
-                <div className = {clName}>
+                <div className = {clName} id = {this.props.id.toString()}>
                     
                 </div>
             );

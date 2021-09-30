@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import './ChessBoard.css';
 import Tile from '../Tile/Tile';
 import Pieces from '../../dataTypes/Pieces';

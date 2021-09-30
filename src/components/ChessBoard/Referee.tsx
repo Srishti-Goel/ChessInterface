@@ -1,4 +1,5 @@
 export function generateMovables(piece_positions: string[][]): string[][] {
+  // Generates a list of which pieces can move to which place
     let movable_positions = [
       ["", "", "", "", "", "", "", ""],
       ["", "", "", "", "", "", "", ""],
@@ -10,7 +11,6 @@ export function generateMovables(piece_positions: string[][]): string[][] {
       ["", "", "", "", "", "", "", ""]
     ];
 
-    
     for(let i = 0; i < 8 ; i++){
       for(let j = 0; j < 8; j++){
 
@@ -161,7 +161,6 @@ export function generateMovables(piece_positions: string[][]): string[][] {
 
         //Rooks & Rest of Queen
         if(pieceId[1] === "r" || pieceId[1] === "q"){
-          let flag = 1;
           for(let x = 1; x + i < 8; x++){
             if(piece_positions[i + x][j] === ""){
               movable_positions[i + x][j] += " " +  pieceId;
@@ -215,12 +214,12 @@ export function generateMovables(piece_positions: string[][]): string[][] {
           let otherPlayer = ( pieceId[0] === "W" )?"B": "W";
           for(let x = -1; x <= 1; x++){
             for(let y = -1; y <= 1; y++){
-              if((i+x < 8) && (i+x > 0) && (j+y < 8) && (j+y > 0)){
-                if((piece_positions[i+x][j+y] === "") && (!movable_positions[i+x][j+y].includes(otherPlayer))){
+              if((i+x < 8) && (i+x > 0) && (j+y < 8) && (j+y > 0)){                                                 // Checks if the moved positions are on the board in the first place
+                if((piece_positions[i+x][j+y] === "") && (!movable_positions[i+x][j+y].includes(otherPlayer))){     // If the space is empty and the opposite player cannot move there
                   console.log(movable_positions[i+x][j+y].includes(otherPlayer));
                   movable_positions[i+x][j+y] += " " +  pieceId;
                 }
-                else if((piece_positions[i+x][j+y][0] !== pieceId[0]) && (!movable_positions[i+x][j+y].includes(otherPlayer))){
+                else if((piece_positions[i+x][j+y][0] !== pieceId[0]) && (!movable_positions[i+x][j+y].includes(otherPlayer))){ // If the opposite player is present on the position, and is not protected
                   movable_positions[i+x][j+y] += " " +  pieceId;
                 }
               }
@@ -229,8 +228,6 @@ export function generateMovables(piece_positions: string[][]): string[][] {
         }
       }
     }
-
-//    console.log("From function: ", movable_positions);
 
     return movable_positions;
   }
@@ -243,7 +240,7 @@ export function generateMovables(piece_positions: string[][]): string[][] {
 //    console.log( "At final position: ", movable_positions[finalPos.y][finalPos.x] );
 //    console.log( "Can move? ", movable_positions[finalPos.y][finalPos.x].includes(pieceID) );
 
-    if (movable_positions[finalPos.y][finalPos.x].includes( pieceID) ){
+    if ( movable_positions[finalPos.y][finalPos.x].includes(pieceID) ){
 
       let pieces = new Array(8);
       for(let i = 0; i < 8; i++){

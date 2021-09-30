@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import './App.css';
 import ChessBoard from './components/ChessBoard/ChessBoard';
 import  { generateMovables, checkMovability } from './components/ChessBoard/Referee';
+import { checkMovability_v2 } from './components/ChessBoard/Referee2';
 
 //Set the opening please, or drop pieces
 
@@ -77,6 +78,7 @@ class App extends React.Component<AppProps, AppState> {
     ]
   }
   render( ) { 
+    //this.state.movable_positions = generateMovables( this.state.piece_positions);
     return ( 
       <ChessBoard 
         grabPiece = {this.grabPiece}
@@ -91,26 +93,29 @@ class App extends React.Component<AppProps, AppState> {
   grabPiece = ( e : React.MouseEvent) => {
     const element = e.target as HTMLElement;
     if( element.classList.contains( "chess_piece_div")){
-      //console.log( "Clickeed!", element);
+      ////console.log( "Clickeed!", element);
 
       element.style.zIndex = "100";
-      console.log("Z-index: ", element.style.zIndex);
+      //console.log("Z-index: ", element.style.zIndex);
       element.style.position = "absolute";
       const x = e.clientX;
       const y = e.clientY;
   
       initialPos = {x : Math.floor( x/100), y : Math.floor( y/100)};
-      console.log( "Attacking positions: ", this.state.movable_positions);
-      console.log( "Moving from: ", initialPos);
+      //console.log( "Attacking positions: ", this.state.movable_positions);
+      //console.log( "Moving from: ", initialPos);
       element.style.left = `${x - 50}px`;
       element.style.top = `${y - 50}px`;
 
       this.state.movable_positions = generateMovables( this.state.piece_positions);
   
       activePiece = element;
+
+
+
     }
     else{
-      console.log( "Empty square!", element);
+      //console.log( "Empty square!", element);
     }
     
   }
@@ -129,32 +134,42 @@ class App extends React.Component<AppProps, AppState> {
   dropPiece = ( e: React.MouseEvent): void => {
     if( activePiece && initialPos){
       let playerColor = this.state.piece_positions[initialPos.y][initialPos.x][0];
-      console.log( "Player: ", playerColor, "Played piece with ID: ", this.state.piece_positions[initialPos.y][initialPos.x]);
+      //console.log( "Player: ", playerColor, "Played piece with ID: ", this.state.piece_positions[initialPos.y][initialPos.x]);
+
       if( playerColor !== this.state.lastPlayed && (this.state.lastPlayed === 'None'? playerColor === "W" : 1)){
         const x = e.clientX;
         const y = e.clientY;
         let finalPos :{x: number, y : number} | null= {x : ( Math.floor( x/100)), y : ( Math.floor( y/100))};
         let pieceID = this.state.piece_positions[initialPos.y][initialPos.x];
 
-        if( checkMovability( this.state.piece_positions, initialPos, finalPos, this.state.movable_positions ) ){
+        //console.log("Fresh maal: ", checkMovability_v2( this.state.piece_positions, initialPos, finalPos, this.state.movable_positions ));
+
+        if( checkMovability_v2( this.state.piece_positions, initialPos, finalPos, this.state.movable_positions ) ){
+
+          //console.log(activePiece);
           activePiece.style.top =`${( ( finalPos.y) * 100)}px` ;
           activePiece.style.left =`${( ( finalPos.x) *100)}px` ;
 
-          console.log( 'Moved to: ', finalPos); 
+          //console.log( 'Moved to: ', finalPos); 
           
           
           
           if( this.state.piece_positions[finalPos.y][finalPos.x] !== ""){
             let killedPieceID = this.state.piece_positions[finalPos.y][finalPos.x];
-            console.log( "Must KILL ", "piece_" + killedPieceID);
-            document.getElementById( "piece_" + killedPieceID)?.style.removeProperty( "background-image");
+            //console.log( "Must KILL ", "piece_" + killedPieceID);
+            let killed = document.getElementById( "piece_" + killedPieceID) as HTMLElement;
+            if(killed){
+              killed.style.removeProperty( "background-image");
+              killed.style.zIndex = "0";
+            }
+            
           }
           this.state.piece_positions[finalPos.y][finalPos.x] = pieceID;
           this.state.piece_positions[initialPos.y][initialPos.x] = "";
 
           this.state.lastPlayed = playerColor;
 
-          console.log( this.state.piece_positions);
+          //console.log( this.state.piece_positions);
 
           finalPos = null;
         }
