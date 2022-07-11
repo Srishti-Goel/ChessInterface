@@ -1,6 +1,6 @@
 # Chess Interface
 (NOTE: This repository is the front-end part of the Chess Player.\
-The backend and the actual player is in a separate repository)
+The backend and the actual player is in a separate repository (found here: https://github.com/Srishti-Goel/Chess-Playing-Bot))
 
 ## Used Technologies
 The technologies used to make this interface were HTML, CSS and React.
